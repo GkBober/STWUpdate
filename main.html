@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Main Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #4a1a73, #833ab4, #c84ec0);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .text-large {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      user-select: none;
+      animation: flyInBlur 1.2s ease forwards;
+    }
+
+    .text-here {
+      font-size: 28px;
+      font-weight: 600;
+      color: #3b82f6;
+      cursor: pointer;
+      user-select: none;
+      animation: flyInBlur 1.2s ease forwards;
+      animation-delay: 0.5s;
+      animation-fill-mode: backwards;
+    }
+
+    @keyframes flyInBlur {
+      0% {
+        opacity: 0;
+        transform: translateY(60px);
+        filter: blur(8px);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(10px);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* Lewy dolny panel z logout i youtube */
+    .bottom-left-panel {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .logout-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .logout-text:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .youtube-logo {
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      fill: gray;
+      transition: fill 0.3s ease;
+    }
+    .youtube-logo:hover {
+      fill: #FF0000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="text-large">download ultra tool</div>
+  <div class="text-here" onclick="window.open('https://github.com/GkBober/SuperToolProgram','_blank')">here</div>
+
+  <div class="bottom-left-panel">
+    <div class="logout-text" onclick="window.location.href='LoginExample.html'">Log Out</div>
+    <svg class="youtube-logo" viewBox="0 0 24 17" xmlns="http://www.w3.org/2000/svg" aria-label="YouTube" role="button" onclick="window.location.href='youtu.html'">
+      <path d="M23.5 1.6s-.2-1.4-1-2c-.9-.9-1.9-.9-2.4-1-3.4-.2-8.5-.2-8.5-.2h-.1s-5.1 0-8.5.2c-.5 0-1.5.1-2.4 1-.8.6-1 2-1 2S0 3.4 0 5.3v6.4c0 1.9.2 3.7.2 3.7s.2 1.4 1 2c.9.9 2.1.9 2.6 1.1 1.9.1 8.1.2 8.1.2s5.1 0 8.5-.2c.5 0 1.7-.1 2.6-1 1 .7 1 2 1 2s.2-1.8.2-3.7V5.3c0-1.9-.2-3.7-.2-3.7zM9.5 12.3V6.7l5.3 2.8-5.3 2.8z" />
+    </svg>
+  </div>
+
+</body>
+</html>

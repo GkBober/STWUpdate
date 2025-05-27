@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #4a1a73, #833ab4, #c84ec0);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .login-container {
+      backdrop-filter: blur(20px);
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 20px;
+      width: 380px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .logo div {
+      background-color: white;
+      border-radius: 2px;
+    }
+    .logo .top,
+    .logo .bottom {
+      width: 20px;
+      height: 4px;
+    }
+    .logo .middle {
+      width: 40px;
+      height: 8px;
+      margin: 6px 0;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .input-group {
+      margin: 15px 0;
+      position: relative;
+      border-radius: 10px;
+      padding: 3px; /* padding for RGB border */
+      background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 1400% 1400%;
+      animation: rainbow 15s linear infinite;
+      display: flex;
+      align-items: center;
+    }
+    @keyframes rainbow {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 140% 50%;
+      }
+    }
+    input {
+      flex-grow: 1;
+      padding: 12px 40px 12px 16px;
+      border: none;
+      border-radius: 7px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 14px;
+      transition: 0.3s ease;
+      outline-offset: 0;
+    }
+    input:focus {
+      outline: none;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+      fill: white;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    .toggle-password:hover {
+      opacity: 1;
+    }
+
+    .check-button {
+      font-size: 26px;
+      margin-top: 15px;
+      cursor: pointer;
+      color: white;
+      background-color: transparent;
+      border: 2.5px solid #00BFFF;
+      border-radius: 10px;
+      padding: 12px 40px;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .check-button:hover {
+      background-color: rgba(0, 191, 255, 0.15);
+      transform: scale(1.05);
+      color: #00BFFF;
+    }
+    .error {
+      color: #ff4d4d;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <div class="top"></div>
+      <div class="middle"></div>
+      <div class="bottom"></div>
+    </div>
+    <h2>Log In</h2>
+
+    <!-- Email input (ignored in function) -->
+    <div class="input-group">
+      <input type="email" id="email" placeholder="Enter Email" autocomplete="off" />
+    </div>
+
+    <!-- Password input -->
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Enter Password" autocomplete="off" />
+      <svg class="toggle-password" id="togglePassword" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Toggle Password Visibility" role="button">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3" fill="white"/>
+      </svg>
+    </div>
+
+    <!-- Confirm Password input -->
+    <div class="input-group">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="off" />
+      <svg class="toggle-password" id="toggleConfirmPassword" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Toggle Confirm Password Visibility" role="button">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3" fill="white"/>
+      </svg>
+    </div>
+
+    <button class="check-button" onclick="goToMain()">✓</button>
+    <div id="error" class="error" style="display:none;">Wrong Password</div>
+  </div>
+
+  <script>
+    // Toggle password visibility for password input
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      if(type === 'password'){
+        togglePassword.innerHTML = `
+          <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3" fill="white"/>
+        `;
+      } else {
+        togglePassword.innerHTML = `
+          <path d="M2 2l20 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.94 17.94C16.27 19.1 14.2 19.79 12 19.79c-7 0-11-7-11-7 1.2-2.25 3.57-4.1 6.4-4.8" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        `;
+      }
+    });
+
+    // Toggle password visibility for confirm password input
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+
+    toggleConfirmPassword.addEventListener('click', () => {
+      const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPasswordInput.setAttribute('type', type);
+      if(type === 'password'){
+        toggleConfirmPassword.innerHTML = `
+          <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3" fill="white"/>
+        `;
+      } else {
+        toggleConfirmPassword.innerHTML = `
+          <path d="M2 2l20 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.94 17.94C16.27 19.1 14.2 19.79 12 19.79c-7 0-11-7-11-7 1.2-2.25 3.57-4.1 6.4-4.8" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        `;
+      }
+    });
+
+    // Button click simply goes to main.html without validation
+    function goToMain() {
+      window.location.href = "main.html";
+    }
+  </script>
+</body>
+</html>
